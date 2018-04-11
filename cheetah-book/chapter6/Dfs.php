@@ -41,4 +41,22 @@ class Dfs
 
         return $this->dp[$nowH][$nowW] = $this->dfsWithMemo($nowH + 1, $nowW) + $this->dfsWithMemo($nowH, $nowW + 1);
     }
+
+    // ここから先に行く方法は何通りあるかではなく、ここまで来る方法は何通りあったかをメモする
+    // 単純化させて1マス/4マスしかない場合を考えてみればよかった
+    function calc()
+    {
+        $dp[0][0] = 1;
+        for ($i = 0; $i < $this->h; $i++) {
+            for ($j = 0; $j < $this->w; $j++) {
+                if ($i != 0) {
+                    $dp[$i][$j] += $dp[$i - 1][$j];
+                }
+
+                if ($j != 0) {
+                    $dp[$i][$j] += $dp[$i][$j - 1];
+                }
+            }
+        }
+    }
 }
