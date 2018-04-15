@@ -1,23 +1,25 @@
 <?php
 
-$maze = ["...", "...", "..."];
-$startRow = 0;
-$startCol = 1;
-// これは移動できる種類(移動する順番じゃない)
-$moveRow = [1, 0, -1, 0];
-$moveCol = [0, 1, 0, -1];
+//$maze = ["...", "...", "..."];
+//$startRow = 0;
+//$startCol = 1;
+//$moveRow = [1, 0, -1, 0]; // これは移動できる種類(移動する順番じゃない)
+//$moveCol = [0, 1, 0, -1];
+// return 3
 
 //$maze = ["...", "...", "..."];
 //$startRow = 0;
 //$startCol = 1;
 //$moveRow = [1, 0, -1, 0, 1, 1, -1, 1];
 //$moveCol = [0, 1, 0, -1, 1, -1, 1, -1];
+// return 2
 
-//$maze = ["X.X", "...", "XXX", "X.X"];
-//$startRow = 0;
-//$startCol = 1;
-//$moveRow = [1, 0, -1, 0];
-//$moveCol = [0, 1, 0, -1];
+$maze = ["X.X", "...", "XXX", "X.X"];
+$startRow = 0;
+$startCol = 1;
+$moveRow = [1, 0, -1, 0];
+$moveCol = [0, 1, 0, -1];
+// return -1
 
 $mazeMaker = new MazeMaker();
 var_dump($mazeMaker->longestPath($maze, $startRow, $startCol, $moveRow, $moveCol));
@@ -25,7 +27,7 @@ var_dump($mazeMaker->longestPath($maze, $startRow, $startCol, $moveRow, $moveCol
 class MazeMaker
 {
     // 最大跳躍数を返す、抜け出せない場合には-1を返す
-    function longestPath($maze, $startRow, $startCol, $moveRow, $moveCol)
+    function longestPath($maze, $startRow, $startCol, $moveRow, $moveCol): int
     {
         $max = 0;
         $width = mb_strlen($maze[0]);
@@ -62,21 +64,24 @@ class MazeMaker
                     $board[$nextY][$nextX] == -1 &&
                     mb_substr($maze[$nextY], $nextX, 1) == '.'
                 ) {
-                    $board[$nextX][$nextY] = $board[$y][$x] + 1;
+                    $board[$nextY][$nextX] = $board[$y][$x] + 1;
                     $queueX[] = $nextX;
                     $queueY[] = $nextY;
                 }
             }
+        }
 
-            for ($i = 0; $i < $height; $i++) {
-                for ($j = 0; $j < $width; $j++) {
-                    if (mb_substr($maze[$i], $j, 1) == '.' && $board[$i][$j] == -1) {
-                        return -1;
-                    }
-                    $max = max($max, $board[$i][$j]);
+        // ここからは全ての移動パターンを試した後の処理
+        for ($i = 0; $i < $height; $i++) {
+            for ($j = 0; $j < $width; $j++) {
+                // 移動できるマスが-1のままであれば、そこに出口をおけば抜け出せなくなる
+                if (mb_substr($maze[$i], $j, 1) == '.' && $board[$i][$j] == -1) {
+                    return -1;
                 }
+                $max = max($max, $board[$i][$j]);
             }
         }
+
 
         return $max;
     }
