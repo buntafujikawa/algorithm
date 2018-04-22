@@ -15,6 +15,7 @@ class BadNeighbors
         $count = count($donations);
         $dp = [];
 
+        // 寄付金の加算(0番目から開始)
         for ($i = 0; $i < $count - 1; $i++) {
             $dp[$i] = $donations[$i];
 
@@ -28,7 +29,9 @@ class BadNeighbors
 
             $ans = max($ans, $dp[$i]);
         }
+        var_dump($dp);
 
+        // 寄付金の加算(1番目から開始)
         for ($i = 0; $i < $count - 1; $i++) {
             $dp[$i] = $donations[$i + 1];
 
@@ -42,6 +45,8 @@ class BadNeighbors
 
             $ans = max($ans, $dp[$i]);
         }
+
+        var_dump($dp);
 
         return $ans;
     }
