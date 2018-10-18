@@ -7,23 +7,14 @@ function compressionString(string $string): string
 {
     $compressionString = "";
     $count = 0;
-    $targetString = "";
 
     for ($i = 0; $i < strlen($string); $i++) {
-        $tmpString = substr($string, $i, 1);
-        if ($i === 0) {
-            $targetString = $tmpString;
-            $count++;
-        } elseif ($targetString === $tmpString) {
-            $count++;
-        } else {
-            $compressionString .= $targetString . strval($count);
-            $targetString = $tmpString;
-            $count = 1;
+        $count++;
+        if ($i + 1 > strlen($string) || substr($string, $i, 1) !== substr($string, $i + 1, 1)) {
+            $compressionString .= substr($string, $i, 1) . strval($count);
+            $count = 0;
         }
     }
-    $compressionString .= $targetString . strval($count);
-
     return strlen($compressionString) >= strlen($string) ? $string : $compressionString;
 }
 
