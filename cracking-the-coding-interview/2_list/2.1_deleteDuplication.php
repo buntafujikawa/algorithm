@@ -24,3 +24,20 @@ var_dump(deleteDuplication([1, 2, 1]) === [1, 2]);
 /*
  * 一時的なバッファが使用できない場合
  */
+function deleteDuplicationWithoutTempBuffer(array $list): array
+{
+    for ($i = 0; $i < count($list) - 1; $i++) {
+        for ($j = 1; $j < count($list); $j++) {
+            if ($list[$i] === $list[$j]) {
+                unset($list[$j]);
+            }
+        }
+    }
+
+    return $list;
+}
+
+// test
+var_dump(deleteDuplicationWithoutTempBuffer([]) === []);
+var_dump(deleteDuplicationWithoutTempBuffer([1]) === [1]);
+var_dump(deleteDuplicationWithoutTempBuffer([1, 2, 1]) === [1, 2]);
